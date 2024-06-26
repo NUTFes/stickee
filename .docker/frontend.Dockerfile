@@ -1,5 +1,5 @@
 # ベースイメージの作成
-FROM node:18.16.0
+FROM node:18.17.0
 
 ARG CRYPT_NAME="git-crypt"
 ARG CRYPT_PATH="/bin/git-crypt"
