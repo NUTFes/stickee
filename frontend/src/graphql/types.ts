@@ -1,4 +1,6 @@
+import { gql } from "@urql/core";
 import { IntrospectionQuery } from "graphql";
+import * as Urql from "urql";
 
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
@@ -20,6 +22,7 @@ export type Incremental<T> =
   | {
       [P in keyof T]?: P extends " $fragmentName" | "__typename" ? T[P] : never;
     };
+export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: { input: string; output: string };
@@ -28,6 +31,7 @@ export type Scalars = {
   Int: { input: number; output: number };
   Float: { input: number; output: number };
   bigint: { input: any; output: any };
+  bytea: { input: any; output: any };
 };
 
 /** Boolean expression to compare columns of type "bigint". All fields are combined with logical 'AND'. */
@@ -347,6 +351,19 @@ export type BureauVarianceFields = {
 /** order by variance() on columns of table "bureau" */
 export type BureauVarianceOrderBy = {
   id?: InputMaybe<OrderBy>;
+};
+
+/** Boolean expression to compare columns of type "bytea". All fields are combined with logical 'AND'. */
+export type ByteaComparisonExp = {
+  _eq?: InputMaybe<Scalars["bytea"]["input"]>;
+  _gt?: InputMaybe<Scalars["bytea"]["input"]>;
+  _gte?: InputMaybe<Scalars["bytea"]["input"]>;
+  _in?: InputMaybe<Array<Scalars["bytea"]["input"]>>;
+  _isNull?: InputMaybe<Scalars["Boolean"]["input"]>;
+  _lt?: InputMaybe<Scalars["bytea"]["input"]>;
+  _lte?: InputMaybe<Scalars["bytea"]["input"]>;
+  _neq?: InputMaybe<Scalars["bytea"]["input"]>;
+  _nin?: InputMaybe<Array<Scalars["bytea"]["input"]>>;
 };
 
 /** ordering argument of a cursor */
@@ -2130,6 +2147,9 @@ export type StringComparisonExp = {
 export type UserAttribute = {
   __typename?: "UserAttribute";
   id: Scalars["String"]["output"];
+  longValue?: Maybe<Scalars["String"]["output"]>;
+  longValueHash?: Maybe<Scalars["bytea"]["output"]>;
+  longValueHashLowerCase?: Maybe<Scalars["bytea"]["output"]>;
   name: Scalars["String"]["output"];
   userId: Scalars["String"]["output"];
   /** An object relationship */
@@ -2182,6 +2202,9 @@ export type UserAttributeBoolExp = {
   _not?: InputMaybe<UserAttributeBoolExp>;
   _or?: InputMaybe<Array<UserAttributeBoolExp>>;
   id?: InputMaybe<StringComparisonExp>;
+  longValue?: InputMaybe<StringComparisonExp>;
+  longValueHash?: InputMaybe<ByteaComparisonExp>;
+  longValueHashLowerCase?: InputMaybe<ByteaComparisonExp>;
   name?: InputMaybe<StringComparisonExp>;
   userId?: InputMaybe<StringComparisonExp>;
   user_entity?: InputMaybe<UserEntityBoolExp>;
@@ -2197,6 +2220,9 @@ export enum UserAttributeConstraint {
 /** input type for inserting data into table "user_attribute" */
 export type UserAttributeInsertInput = {
   id?: InputMaybe<Scalars["String"]["input"]>;
+  longValue?: InputMaybe<Scalars["String"]["input"]>;
+  longValueHash?: InputMaybe<Scalars["bytea"]["input"]>;
+  longValueHashLowerCase?: InputMaybe<Scalars["bytea"]["input"]>;
   name?: InputMaybe<Scalars["String"]["input"]>;
   userId?: InputMaybe<Scalars["String"]["input"]>;
   user_entity?: InputMaybe<UserEntityObjRelInsertInput>;
@@ -2207,6 +2233,7 @@ export type UserAttributeInsertInput = {
 export type UserAttributeMaxFields = {
   __typename?: "UserAttributeMaxFields";
   id?: Maybe<Scalars["String"]["output"]>;
+  longValue?: Maybe<Scalars["String"]["output"]>;
   name?: Maybe<Scalars["String"]["output"]>;
   userId?: Maybe<Scalars["String"]["output"]>;
   value?: Maybe<Scalars["String"]["output"]>;
@@ -2215,6 +2242,7 @@ export type UserAttributeMaxFields = {
 /** order by max() on columns of table "user_attribute" */
 export type UserAttributeMaxOrderBy = {
   id?: InputMaybe<OrderBy>;
+  longValue?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   userId?: InputMaybe<OrderBy>;
   value?: InputMaybe<OrderBy>;
@@ -2224,6 +2252,7 @@ export type UserAttributeMaxOrderBy = {
 export type UserAttributeMinFields = {
   __typename?: "UserAttributeMinFields";
   id?: Maybe<Scalars["String"]["output"]>;
+  longValue?: Maybe<Scalars["String"]["output"]>;
   name?: Maybe<Scalars["String"]["output"]>;
   userId?: Maybe<Scalars["String"]["output"]>;
   value?: Maybe<Scalars["String"]["output"]>;
@@ -2232,6 +2261,7 @@ export type UserAttributeMinFields = {
 /** order by min() on columns of table "user_attribute" */
 export type UserAttributeMinOrderBy = {
   id?: InputMaybe<OrderBy>;
+  longValue?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   userId?: InputMaybe<OrderBy>;
   value?: InputMaybe<OrderBy>;
@@ -2256,6 +2286,9 @@ export type UserAttributeOnConflict = {
 /** Ordering options when selecting data from "user_attribute". */
 export type UserAttributeOrderBy = {
   id?: InputMaybe<OrderBy>;
+  longValue?: InputMaybe<OrderBy>;
+  longValueHash?: InputMaybe<OrderBy>;
+  longValueHashLowerCase?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   userId?: InputMaybe<OrderBy>;
   user_entity?: InputMaybe<UserEntityOrderBy>;
@@ -2272,6 +2305,12 @@ export enum UserAttributeSelectColumn {
   /** column name */
   Id = "id",
   /** column name */
+  LongValue = "longValue",
+  /** column name */
+  LongValueHash = "longValueHash",
+  /** column name */
+  LongValueHashLowerCase = "longValueHashLowerCase",
+  /** column name */
   Name = "name",
   /** column name */
   UserId = "userId",
@@ -2282,6 +2321,9 @@ export enum UserAttributeSelectColumn {
 /** input type for updating data in table "user_attribute" */
 export type UserAttributeSetInput = {
   id?: InputMaybe<Scalars["String"]["input"]>;
+  longValue?: InputMaybe<Scalars["String"]["input"]>;
+  longValueHash?: InputMaybe<Scalars["bytea"]["input"]>;
+  longValueHashLowerCase?: InputMaybe<Scalars["bytea"]["input"]>;
   name?: InputMaybe<Scalars["String"]["input"]>;
   userId?: InputMaybe<Scalars["String"]["input"]>;
   value?: InputMaybe<Scalars["String"]["input"]>;
@@ -2298,6 +2340,9 @@ export type UserAttributeStreamCursorInput = {
 /** Initial value of the column from where the streaming should start */
 export type UserAttributeStreamCursorValueInput = {
   id?: InputMaybe<Scalars["String"]["input"]>;
+  longValue?: InputMaybe<Scalars["String"]["input"]>;
+  longValueHash?: InputMaybe<Scalars["bytea"]["input"]>;
+  longValueHashLowerCase?: InputMaybe<Scalars["bytea"]["input"]>;
   name?: InputMaybe<Scalars["String"]["input"]>;
   userId?: InputMaybe<Scalars["String"]["input"]>;
   value?: InputMaybe<Scalars["String"]["input"]>;
@@ -2307,6 +2352,12 @@ export type UserAttributeStreamCursorValueInput = {
 export enum UserAttributeUpdateColumn {
   /** column name */
   Id = "id",
+  /** column name */
+  LongValue = "longValue",
+  /** column name */
+  LongValueHash = "longValueHash",
+  /** column name */
+  LongValueHashLowerCase = "longValueHashLowerCase",
   /** column name */
   Name = "name",
   /** column name */
@@ -4542,6 +4593,19 @@ export type UserRoleMappingAggregateBoolExpCount = {
   distinct?: InputMaybe<Scalars["Boolean"]["input"]>;
   filter?: InputMaybe<UserRoleMappingBoolExp>;
   predicate: IntComparisonExp;
+};
+
+export type GetOneUserNameQueryVariables = Exact<{
+  userId: Scalars["String"]["input"];
+}>;
+
+export type GetOneUserNameQuery = {
+  __typename?: "query_root";
+  userEntityByPk?: {
+    __typename?: "UserEntity";
+    firstName?: string | null;
+    lastName?: string | null;
+  } | null;
 };
 export default {
   __schema: {
@@ -8049,6 +8113,30 @@ export default {
             args: [],
           },
           {
+            name: "longValue",
+            type: {
+              kind: "SCALAR",
+              name: "Any",
+            },
+            args: [],
+          },
+          {
+            name: "longValueHash",
+            type: {
+              kind: "SCALAR",
+              name: "Any",
+            },
+            args: [],
+          },
+          {
+            name: "longValueHashLowerCase",
+            type: {
+              kind: "SCALAR",
+              name: "Any",
+            },
+            args: [],
+          },
+          {
             name: "name",
             type: {
               kind: "NON_NULL",
@@ -8197,6 +8285,14 @@ export default {
             args: [],
           },
           {
+            name: "longValue",
+            type: {
+              kind: "SCALAR",
+              name: "Any",
+            },
+            args: [],
+          },
+          {
             name: "name",
             type: {
               kind: "SCALAR",
@@ -8229,6 +8325,14 @@ export default {
         fields: [
           {
             name: "id",
+            type: {
+              kind: "SCALAR",
+              name: "Any",
+            },
+            args: [],
+          },
+          {
+            name: "longValue",
             type: {
               kind: "SCALAR",
               name: "Any",
@@ -16275,3 +16379,21 @@ export default {
     directives: [],
   },
 } as unknown as IntrospectionQuery;
+
+export const GetOneUserNameDocument = gql`
+  query GetOneUserName($userId: String!) {
+    userEntityByPk(id: $userId) {
+      firstName
+      lastName
+    }
+  }
+`;
+
+export function useGetOneUserNameQuery(
+  options: Omit<Urql.UseQueryArgs<GetOneUserNameQueryVariables>, "query">
+) {
+  return Urql.useQuery<GetOneUserNameQuery, GetOneUserNameQueryVariables>({
+    query: GetOneUserNameDocument,
+    ...options,
+  });
+}

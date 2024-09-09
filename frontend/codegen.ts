@@ -19,7 +19,7 @@ const config: CodegenConfig = {
   schema: [hasuraSchema],
   generates: {
     "./src/graphql/types.ts": {
-      documents: "query.graphql",
+      documents: "src/gql/*.gql",
       plugins: [
         "typescript",
         "typescript-operations",
