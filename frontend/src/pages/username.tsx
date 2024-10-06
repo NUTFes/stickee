@@ -2,30 +2,33 @@ import { Grid, TextField, Stack, Button, Box, Typography } from "@mui/material";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { useQuery } from "urql";
 
 import { DetailLayout } from "@/components/layout";
 import { DETAIL_PAGE_CONSTANTS } from "@/constants/detailPage";
+import { GetOneUserNameDocument } from "@/graphql/types";
+
+import type { GetOneUserNameQuery } from "@/graphql/types";
 
 export const UserName: NextPage = () => {
   const router = useRouter();
   const details = DETAIL_PAGE_CONSTANTS.username;
 
-  // TODO: API側から名前を取得するメソッドを作成する
-  const getCurrentName = (): {
-    currentFirstName: string;
-    currentLastName: string;
-  } => ({
-    currentFirstName: "技大",
-    currentLastName: "太郎",
+  const [firstName, setFirstName] = useState<string>("");
+  const [lastName, setLastName] = useState<string>("");
+  const [result, reexecuteQuery] = useQuery<GetOneUserNameQuery>({
+    query: GetOneUserNameDocument,
+    variables: {
+      id: "ef3eabbe-9f27-4fa9-976b-1954311841c1",
+    },
   });
-
-  const { currentFirstName, currentLastName } = getCurrentName();
-
-  const [firstName, setFirstName] = useState(currentFirstName);
-  const [lastName, setLastName] = useState(currentLastName);
-
+  const { data, fetching, error } = result;
+  const myFirstName = result?.data?.userEntityByPk?.firstName;
+  const myLastName = result?.data?.userEntityByPk?.lastName;
   const saveName = () => {
-    console.log(firstName + lastName); // eslint-disable-line no-console
+    // TODO: 名前を保存する機能の実装
+    // console.log("元の名前は" + myLastName + myFirstName);
+    // console.log("変更後は" + lastName + firstName);
   };
 
   const cancell = () => {
