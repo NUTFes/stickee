@@ -1,6 +1,5 @@
-
-query GetOneUserName ($userId: String!) {
-  userEntityByPk(id: $userId) {
+query GetOneUserName($id: String!) {
+  userEntityByPk(id: $id) {
     firstName
     lastName
   }

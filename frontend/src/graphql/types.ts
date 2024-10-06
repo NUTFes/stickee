@@ -1527,7 +1527,7 @@ export type KeycloakGroupBoolExp = {
 export enum KeycloakGroupConstraint {
   /** unique or primary key constraint on columns "id" */
   ConstraintGroup = "constraint_group",
-  /** unique or primary key constraint on columns "parent_group", "realm_id", "name" */
+  /** unique or primary key constraint on columns "realm_id", "name", "parent_group" */
   SiblingNames = "sibling_names",
 }
 
@@ -3029,7 +3029,7 @@ export type UserRoleMappingBoolExp = {
 
 /** unique or primary key constraints on table "user_role_mapping" */
 export enum UserRoleMappingConstraint {
-  /** unique or primary key constraint on columns "role_id", "user_id" */
+  /** unique or primary key constraint on columns "user_id", "role_id" */
   ConstraintC = "constraint_c",
 }
 
@@ -4596,7 +4596,7 @@ export type UserRoleMappingAggregateBoolExpCount = {
 };
 
 export type GetOneUserNameQueryVariables = Exact<{
-  userId: Scalars["String"]["input"];
+  id: Scalars["String"]["input"];
 }>;
 
 export type GetOneUserNameQuery = {
@@ -16381,8 +16381,8 @@ export default {
 } as unknown as IntrospectionQuery;
 
 export const GetOneUserNameDocument = gql`
-  query GetOneUserName($userId: String!) {
-    userEntityByPk(id: $userId) {
+  query GetOneUserName($id: String!) {
+    userEntityByPk(id: $id) {
       firstName
       lastName
     }
