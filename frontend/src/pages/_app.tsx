@@ -3,20 +3,25 @@ import "@/styles/globals.css";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
-import { createClient, Provider } from "urql";
+import { cacheExchange, createClient, fetchExchange, Provider } from "urql";
 
 import { Layout } from "@/components/layout";
 
 import type { AppProps } from "next/app";
 
+const isServer = typeof window === "undefined";
+
 const client = createClient({
-  url: process.env.HASURA_GRAPHQL_URL || "http://api:12340/v1/graphql",
+  url: isServer
+    ? process.env.HASURA_GRAPHQL_URL || ""
+    : process.env.NEXT_PUBLIC_HASURA_GRAPHQL_URL || "",
   fetchOptions: {
     headers: {
-      "x-hasura-admin-secret": process.env.HASURA_GRAPHQL_ADMIN_SECRET || "",
+      "x-hasura-admin-secret":
+        process.env.NEXT_PUBLIC_HASURA_GRAPHQL_ADMIN_SECRET || "",
     },
   },
-  exchanges: [],
+  exchanges: [cacheExchange, fetchExchange],
 });
 
 export default function App({
