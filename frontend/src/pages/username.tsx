@@ -23,10 +23,12 @@ export const UserName: NextPage = () => {
     },
   });
   const { data, fetching, error } = result;
-
+  const myFirstName = result?.data?.userEntityByPk?.firstName;
+  const myLastName = result?.data?.userEntityByPk?.lastName;
   const saveName = () => {
-    // TODO: birthdayを保存する機能の実装
-    // console.log(firstName + lastName); // eslint-disable-line no-console
+    // TODO: 名前を保存する機能の実装
+    // console.log("元の名前は" + myLastName + myFirstName);
+    // console.log("変更後は" + lastName + firstName);
   };
 
   const cancell = () => {
